@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Download, Mail, Sparkles } from "lucide-react";
-const img = new URL("../assets/hussein.jpeg", import.meta.url).href;
+const portrait = new URL("../assets/hussein.jpeg", import.meta.url).href;
 
 const ROLES = ["AI Systems", "Machine Learning", "SaaS Platforms", "Automation", "Computer Vision", "Data Intelligence", "AI Agents"];
 
