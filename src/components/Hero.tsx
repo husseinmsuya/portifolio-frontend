@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Download, Mail, Sparkles } from "lucide-react";
-import portrait from "@/assets/hussein.jpeg";
+import portrait from "../assets/hussein.jpeg";
 
 const ROLES = ["AI Systems", "Machine Learning", "SaaS Platforms", "Automation", "Computer Vision", "Data Intelligence", "AI Agents"];
 
