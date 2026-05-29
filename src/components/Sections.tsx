@@ -212,7 +212,7 @@ return (
                   transition={{ duration: 0.5, delay: i * 0.15 + 0.1 }}
                   className="glass rounded-2xl p-6 relative overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-[color:var(--neon-cyan)]/50 before:absolute before:inset-0 before:rounded-2xl before:bg-gradient-to-r before:from-[color:var(--neon-cyan)]/0 before:via-[color:var(--neon-cyan)]/0 before:to-[color:var(--neon-purple)]/0 before:transition-all before:duration-500 before:pointer-events-none group-hover:before:from-[color:var(--neon-cyan)]/30 group-hover:before:via-[color:var(--neon-cyan)]/20 group-hover:before:to-[color:var(--neon-purple)]/30"
                 >
-                  <p className="font-mono text-xs text-[color:var(--neon-cyan)]">{it.year}</p>
+                  <p className="font-mono text-xs text-[color:var(--neon-cyan)]"></p>
                   <h4 className="mt-1 text-lg font-semibold">{it.title}</h4>
                   <p className="mt-2 text-sm text-muted-foreground">{it.desc}</p>
                 </motion.div>
