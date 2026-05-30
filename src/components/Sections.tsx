@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Brain, Code2, Cloud, Database, Cpu, Smartphone, Bot, LineChart, Github, ExternalLink, Mail, MapPin, Linkedin, Phone, GraduationCap, Award, BookOpen, Briefcase } from "lucide-react";
 import { MessageCircle } from "lucide-react";
 import { Monitor } from "lucide-react";
+import { useState } from "react";
 
 const fadeIn = {
   initial: { opacity: 0, y: 30 },
@@ -239,8 +240,42 @@ return (
   </section>
 );}
 
-/* CONTACT */
+//* CONTACT */
 export function Contact() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [status, setStatus] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setStatus("");
+
+    try {
+      const response = await fetch("https://portifolio-backend-1-hw7w.onrender.com/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, message }),
+      });
+      const data = await response.json();
+      if (data.success) {
+        setStatus("success");
+        setName("");
+        setEmail("");
+        setMessage("");
+      } else {
+        setStatus("error");
+      }
+    } catch (error) {
+      console.error("Kosa:", error);
+      setStatus("error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const channels = [
     { icon: Mail, label: "Email", value: "husseinmsuya898@gmail.com" },
     { icon: Linkedin, label: "LinkedIn", value: "https://www.linkedin.com/in/hussein-msuya-4a61653ab/" },
@@ -248,133 +283,146 @@ export function Contact() {
     { icon: Phone, label: "Phone", value: "+255682751790 on request" },
     { icon: MapPin, label: "Location", value: "Dar es Salaam, Tanzania" },
   ];
-  return (
-  <section id="contact" className="relative py-32 overflow-hidden">
-    <div className="absolute inset-0 -z-10">
-      <div className="absolute left-1/2 top-1/2 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[color:var(--neon-purple)]/20 blur-[120px] animate-pulse" />
-      <div className="absolute right-0 bottom-0 h-64 w-64 rounded-full bg-[color:var(--neon-cyan)]/10 blur-[100px] animate-pulse delay-1000" />
-    </div>
-    <div className="mx-auto max-w-6xl px-6">
-      <SectionHeader tag="Contact" title="Let's build the future together." sub="Open to collaborations, research, and product work." />
-      <div className="grid gap-8 lg:grid-cols-[1fr_1.2fr]">
-        <motion.div 
-          initial={{ opacity: 0, x: -50, rotateY: -10 }}
-          whileInView={{ opacity: 1, x: 0, rotateY: 0 }}
-          transition={{ duration: 0.6, type: "spring", bounce: 0.3 }}
-          className="glass rounded-3xl p-8 hover:shadow-2xl hover:shadow-[color:var(--neon-cyan)]/30 transition-all duration-500 hover:scale-[1.02] group"
-        >
-          <p className="mb-6 font-mono text-xs uppercase tracking-widest text-[color:var(--neon-cyan)] animate-pulse">// channels</p>
-          <ul className="space-y-4">
-            {channels.map((c, idx) => {
-              const Icon = c.icon;
-              return (
-                <motion.li 
-                  key={c.label} 
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ delay: idx * 0.1 }}
-                  className="flex items-center gap-4 group/channel cursor-pointer"
-                >
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl glass transition-all duration-300 group-hover/channel:scale-110 group-hover/channel:shadow-[0_0_15px_var(--neon-cyan)]">
-                    <Icon size={16} className="text-[color:var(--neon-cyan)] transition-all duration-300 group-hover/channel:scale-110" />
-                  </div>
-                  <div>
-                    <p className="text-xs uppercase tracking-wide text-muted-foreground group-hover/channel:text-[color:var(--neon-cyan)] transition-colors">{c.label}</p>
-                    <p className="font-mono text-sm group-hover/channel:text-white transition-colors">{c.value}</p>
-                  </div>
-                </motion.li>
-              );
-            })}
-          </ul>
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="mt-8 flex items-center gap-2 rounded-xl border border-[color:var(--neon-cyan)]/30 bg-[color:var(--neon-cyan)]/5 px-4 py-3 text-sm hover:border-[color:var(--neon-cyan)]/60 hover:bg-[color:var(--neon-cyan)]/10 transition-all duration-300 hover:shadow-[0_0_20px_var(--neon-cyan)]/20"
-          >
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[color:var(--neon-cyan)] opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-[color:var(--neon-cyan)] animate-pulse" />
-            </span>
-            <span className="bg-gradient-to-r from-white to-[color:var(--neon-cyan)] bg-clip-text text-transparent font-medium">
-              Currently available for new opportunities
-            </span>
-          </motion.div>
-        </motion.div>
 
-        <motion.form 
-          initial={{ opacity: 0, x: 50, rotateY: 10 }}
-          whileInView={{ opacity: 1, x: 0, rotateY: 0 }}
-          transition={{ duration: 0.6, type: "spring", bounce: 0.3 }}
-          onSubmit={(e) => e.preventDefault()} 
-          className="glass rounded-3xl p-8 space-y-5 hover:shadow-2xl hover:shadow-[color:var(--neon-purple)]/30 transition-all duration-500 hover:scale-[1.01]"
-        >
-          {[
-            { id: "name", label: "Your name ✨", type: "text" },
-            { id: "email", label: "Email address 📧", type: "email" },
-          ].map((f, idx) => (
-            <motion.div 
-              key={f.id} 
+  return (
+    <section id="contact" className="relative py-32 overflow-hidden">
+      <div className="absolute inset-0 -z-10">
+        <div className="absolute left-1/2 top-1/2 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[color:var(--neon-purple)]/20 blur-[120px] animate-pulse" />
+        <div className="absolute right-0 bottom-0 h-64 w-64 rounded-full bg-[color:var(--neon-cyan)]/10 blur-[100px] animate-pulse delay-1000" />
+      </div>
+      <div className="mx-auto max-w-6xl px-6">
+        <SectionHeader tag="Contact" title="Let's build the future together." sub="Open to collaborations, research, and product work." />
+        <div className="grid gap-8 lg:grid-cols-[1fr_1.2fr]">
+          <motion.div
+            initial={{ opacity: 0, x: -50, rotateY: -10 }}
+            whileInView={{ opacity: 1, x: 0, rotateY: 0 }}
+            transition={{ duration: 0.6, type: "spring", bounce: 0.3 }}
+            className="glass rounded-3xl p-8 hover:shadow-2xl hover:shadow-[color:var(--neon-cyan)]/30 transition-all duration-500 hover:scale-[1.02] group"
+          >
+            <p className="mb-6 font-mono text-xs uppercase tracking-widest text-[color:var(--neon-cyan)] animate-pulse">// channels</p>
+            <ul className="space-y-4">
+              {channels.map((c, idx) => {
+                const Icon = c.icon;
+                return (
+                  <motion.li
+                    key={c.label}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ delay: idx * 0.1 }}
+                    className="flex items-center gap-4 group/channel cursor-pointer"
+                  >
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl glass transition-all duration-300 group-hover/channel:scale-110 group-hover/channel:shadow-[0_0_15px_var(--neon-cyan)]">
+                      <Icon size={16} className="text-[color:var(--neon-cyan)] transition-all duration-300 group-hover/channel:scale-110" />
+                    </div>
+                    <div>
+                      <p className="text-xs uppercase tracking-wide text-muted-foreground group-hover/channel:text-[color:var(--neon-cyan)] transition-colors">{c.label}</p>
+                      <p className="font-mono text-sm group-hover/channel:text-white transition-colors">{c.value}</p>
+                    </div>
+                  </motion.li>
+                );
+              })}
+            </ul>
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: idx * 0.1 + 0.2 }}
+              transition={{ delay: 0.3 }}
+              className="mt-8 flex items-center gap-2 rounded-xl border border-[color:var(--neon-cyan)]/30 bg-[color:var(--neon-cyan)]/5 px-4 py-3 text-sm hover:border-[color:var(--neon-cyan)]/60 hover:bg-[color:var(--neon-cyan)]/10 transition-all duration-300 hover:shadow-[0_0_20px_var(--neon-cyan)]/20"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[color:var(--neon-cyan)] opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-[color:var(--neon-cyan)] animate-pulse" />
+              </span>
+              <span className="bg-gradient-to-r from-white to-[color:var(--neon-cyan)] bg-clip-text text-transparent font-medium">
+                Currently available for new opportunities
+              </span>
+            </motion.div>
+          </motion.div>
+
+          <motion.form
+            initial={{ opacity: 0, x: 50, rotateY: 10 }}
+            whileInView={{ opacity: 1, x: 0, rotateY: 0 }}
+            transition={{ duration: 0.6, type: "spring", bounce: 0.3 }}
+            onSubmit={handleSubmit}
+            className="glass rounded-3xl p-8 space-y-5 hover:shadow-2xl hover:shadow-[color:var(--neon-purple)]/30 transition-all duration-500 hover:scale-[1.01]"
+          >
+            {[
+              { id: "name", label: "Your name ✨", type: "text", value: name, onChange: (e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value) },
+              { id: "email", label: "Email address 📧", type: "email", value: email, onChange: (e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value) },
+            ].map((f, idx) => (
+              <motion.div
+                key={f.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: idx * 0.1 + 0.2 }}
+                className="group relative"
+              >
+                <input
+                  id={f.id}
+                  type={f.type}
+                  required
+                  placeholder=" "
+                  value={f.value}
+                  onChange={f.onChange}
+                  className="peer w-full rounded-xl border border-white/10 bg-white/5 px-4 pt-5 pb-2 text-sm outline-none transition-all duration-300 focus:border-[color:var(--neon-cyan)] focus:shadow-[0_0_25px_var(--neon-cyan)] hover:border-white/20"
+                />
+                <label
+                  htmlFor={f.id}
+                  className="pointer-events-none absolute left-4 top-3.5 text-xs text-muted-foreground transition-all duration-300 peer-placeholder-shown:top-4 peer-placeholder-shown:text-sm peer-focus:top-1.5 peer-focus:text-[10px] peer-focus:text-[color:var(--neon-cyan)] peer-[:not(:placeholder-shown)]:top-1.5 peer-[:not(:placeholder-shown)]:text-[10px] peer-[:not(:placeholder-shown)]:text-[color:var(--neon-cyan)]"
+                >
+                  {f.label}
+                </label>
+              </motion.div>
+            ))}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
               className="group relative"
             >
-              <input 
-                id={f.id} 
-                type={f.type} 
-                required 
+              <textarea
+                id="msg"
+                rows={5}
+                required
                 placeholder=" "
-                className="peer w-full rounded-xl border border-white/10 bg-white/5 px-4 pt-5 pb-2 text-sm outline-none transition-all duration-300 focus:border-[color:var(--neon-cyan)] focus:shadow-[0_0_25px_var(--neon-cyan)] hover:border-white/20"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                className="peer w-full rounded-xl border border-white/10 bg-white/5 px-4 pt-5 pb-2 text-sm outline-none transition-all duration-300 focus:border-[color:var(--neon-cyan)] focus:shadow-[0_0_25px_var(--neon-cyan)] hover:border-white/20 resize-none"
               />
-              <label 
-                htmlFor={f.id} 
+              <label
+                htmlFor="msg"
                 className="pointer-events-none absolute left-4 top-3.5 text-xs text-muted-foreground transition-all duration-300 peer-placeholder-shown:top-4 peer-placeholder-shown:text-sm peer-focus:top-1.5 peer-focus:text-[10px] peer-focus:text-[color:var(--neon-cyan)] peer-[:not(:placeholder-shown)]:top-1.5 peer-[:not(:placeholder-shown)]:text-[10px] peer-[:not(:placeholder-shown)]:text-[color:var(--neon-cyan)]"
               >
-                {f.label}
+                Tell me about your idea 💡
               </label>
             </motion.div>
-          ))}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="group relative"
-          >
-            <textarea 
-              id="msg" 
-              rows={5} 
-              required 
-              placeholder=" "
-              className="peer w-full rounded-xl border border-white/10 bg-white/5 px-4 pt-5 pb-2 text-sm outline-none transition-all duration-300 focus:border-[color:var(--neon-cyan)] focus:shadow-[0_0_25px_var(--neon-cyan)] hover:border-white/20 resize-none"
-            />
-            <label 
-              htmlFor="msg" 
-              className="pointer-events-none absolute left-4 top-3.5 text-xs text-muted-foreground transition-all duration-300 peer-placeholder-shown:top-4 peer-placeholder-shown:text-sm peer-focus:top-1.5 peer-focus:text-[10px] peer-focus:text-[color:var(--neon-cyan)] peer-[:not(:placeholder-shown)]:top-1.5 peer-[:not(:placeholder-shown)]:text-[10px] peer-[:not(:placeholder-shown)]:text-[color:var(--neon-cyan)]"
+            <motion.button
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.5, type: "spring", bounce: 0.4 }}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
+              type="submit"
+              disabled={loading}
+              className="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-[var(--gradient-neon)] px-6 py-3.5 font-medium text-primary-foreground shadow-[var(--glow-cyan)] transition-all duration-300 hover:shadow-[0_0_30px_var(--neon-cyan)] disabled:opacity-70 disabled:cursor-not-allowed"
             >
-              Tell me about your idea 💡
-            </label>
-          </motion.div>
-          <motion.button 
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.5, type: "spring", bounce: 0.4 }}
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.98 }}
-            type="submit" 
-            className="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-[var(--gradient-neon)] px-6 py-3.5 font-medium text-primary-foreground shadow-[var(--glow-cyan)] transition-all duration-300 hover:shadow-[0_0_30px_var(--neon-cyan)]"
-          >
-            <span className="relative z-10 flex items-center gap-2">
-              ✨ Transmit message ✨
-            </span>
-            <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-white/0 via-white/30 to-white/0 transition-transform duration-700 group-hover:translate-x-full" />
-          </motion.button>
-        </motion.form>
-      </div>
-    </div>
-  </section>
-);}
+              <span className="relative z-10 flex items-center gap-2">
+                {loading ? "Transmitting..." : "✨ Transmit message ✨"}
+              </span>
+              <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-white/0 via-white/30 to-white/0 transition-transform duration-700 group-hover:translate-x-full" />
+            </motion.button>
 
+            {status === "success" && (
+              <p className="text-center font-mono text-sm text-[color:var(--neon-cyan)]">✅ Message transmitted successfully!</p>
+            )}
+            {status === "error" && (
+              <p className="text-center font-mono text-sm text-red-400">❌ Transmission failed. Try again.</p>
+            )}
+          </motion.form>
+        </div>
+      </div>
+    </section>
+  );
+}
 /* FOOTER */
 export function Footer() {
   return (
